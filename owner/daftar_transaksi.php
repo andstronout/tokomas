@@ -148,9 +148,7 @@ $no = 1;
                       <th>Tanggal Transaksi</th>
                       <th>Total Bayar</th>
                       <th>Resi Pengiriman</th>
-                      <th>Bukti Bayar</th>
                       <th>Status</th>
-                      <th width=14% class="text-center">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -169,46 +167,7 @@ $no = 1;
                           }
                           ?>
                         </th>
-                        <th>
-                          <!-- Button trigger modal -->
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lihatbuktiModal<?= $transaksi['id_transaksi'] ?>">
-                            Lihat Bukti
-                          </button>
-
-                          <!-- Modal -->
-                          <div class="modal fade" id="lihatbuktiModal<?= $transaksi['id_transaksi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Bukti Pembayaran</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <div class="card bg-dark text-white">
-                                    <img src="../images/bukti_bayar/<?= $transaksi['bukti_bayar']; ?>" class="card-img" alt="...">
-                                  </div>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </th>
                         <th><?= $transaksi['status']; ?></th>
-                        <td>
-                          <?php if ($transaksi['status'] == 'Belum Diproses') { ?>
-                            <a href="detail_transaksi.php?id=<?= $transaksi['id_transaksi']; ?>" class="btn btn-info btn-sm">
-                              <span class="text">Proses Transaksi</span>
-                            </a>
-                          <?php } else { ?>
-                            <a href="detail_transaksi.php?id=<?= $transaksi['id_transaksi']; ?>" class="btn btn-info btn-sm">
-                              <span class="text">Lihat detail</span>
-                            </a>
-                          <?php } ?>
-                        </td>
                       </tr>
                     <?php
                       $no++;
