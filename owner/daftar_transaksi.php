@@ -4,22 +4,9 @@ require "../config.php";
 if (!isset($_SESSION["login_admin"])) {
   header("location:../login.php");
 }
-$id = $_GET["id"];
-$sql_produk = sql("SELECT * FROM detail_transaksi INNER JOIN produk ON detail_transaksi.id_produk=produk.id_produk WHERE id_transaksi='$id'");
+
+$sql_produk = sql("SELECT * FROM transaksi INNER JOIN user ON transaksi.id_user=user.id_user ORDER BY `transaksi`.`tanggal_transaksi` DESC");
 $no = 1;
-
-$cek = sql("SELECT `status` FROM transaksi WHERE id_transaksi='$id'");
-$hasil = $cek->fetch_assoc();
-
-if (isset($_POST["submit"])) {
-  $update_transaksi = sql("UPDATE transaksi SET `status`='Sedang Diproses' , no_resi='$_POST[no_resi]' WHERE id_transaksi='$id'");
-  echo "
-        <script>
-        alert('Data berhasil Ditambahkan');
-        document.location.href = 'daftar_transaksi.php';
-        </script>
-        ";
-}
 ?>
 
 <!DOCTYPE html>
@@ -46,6 +33,7 @@ if (isset($_POST["submit"])) {
 
   <!-- dataTable URL -->
   <link href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/datatables.min.css" rel="stylesheet" />
+
 
 </head>
 
@@ -87,14 +75,14 @@ if (isset($_POST["submit"])) {
           <span>Kelola Pelanggan</span></a>
       </li>
       <!-- Nav Item - Kelola Produk -->
-      <li class="nav-item active">
-        <a class="nav-link" href="#">
+      <li class="nav-item">
+        <a class="nav-link" href="daftar_produk.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Kelola Produk</span></a>
       </li>
       <!-- Nav Item - Kelola Transaksi -->
-      <li class="nav-item">
-        <a class="nav-link" href="daftar_transaksi.php">
+      <li class="nav-item active">
+        <a class="nav-link" href="#.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Kelola Transaksi</span></a>
       </li>
@@ -143,7 +131,7 @@ if (isset($_POST["submit"])) {
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">DETAIL BARANG</h1>
+            <h1 class="h3 mb-0 text-gray-800">Data Transaksi</h1>
           </div>
 
           <!-- Content Row -->
@@ -155,55 +143,78 @@ if (isset($_POST["submit"])) {
                   <thead>
                     <tr>
                       <th width=5%>No</th>
-                      <th>Nama Produk</th>
-                      <th>QTY</th>
+                      <th>Nomor Transaksi</th>
+                      <th>Nama Pelanggan</th>
+                      <th>Tanggal Transaksi</th>
+                      <th>Total Bayar</th>
+                      <th>Resi Pengiriman</th>
+                      <th>Bukti Bayar</th>
+                      <th>Status</th>
+                      <th width=14% class="text-center">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($sql_produk as $produk) : ?>
+                    <?php foreach ($sql_produk as $transaksi) : ?>
                       <tr>
                         <th class="text-center"><?= $no; ?></th>
-                        <th><?= $produk['nama_produk']; ?></th>
-                        <th><?= $produk['qty_transaksi']; ?></th>
+                        <th><?= $transaksi['id_pesanan']; ?></th>
+                        <th><?= $transaksi['nama_user']; ?></th>
+                        <th><?= $transaksi['tanggal_transaksi']; ?></th>
+                        <th><?= $transaksi['total_transaksi']; ?></th>
+                        <th>
+                          <?php if ($transaksi['no_resi'] == NULL) {
+                            echo "Belum ada resi";
+                          } else {
+                            echo $transaksi['no_resi'];
+                          }
+                          ?>
+                        </th>
+                        <th>
+                          <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lihatbuktiModal<?= $transaksi['id_transaksi'] ?>">
+                            Lihat Bukti
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="lihatbuktiModal<?= $transaksi['id_transaksi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Bukti Pembayaran</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="card bg-dark text-white">
+                                    <img src="../images/bukti_bayar/<?= $transaksi['bukti_bayar']; ?>" class="card-img" alt="...">
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </th>
+                        <th><?= $transaksi['status']; ?></th>
+                        <td>
+                          <?php if ($transaksi['status'] == 'Belum Diproses') { ?>
+                            <a href="detail_transaksi.php?id=<?= $transaksi['id_transaksi']; ?>" class="btn btn-info btn-sm">
+                              <span class="text">Proses Transaksi</span>
+                            </a>
+                          <?php } else { ?>
+                            <a href="detail_transaksi.php?id=<?= $transaksi['id_transaksi']; ?>" class="btn btn-info btn-sm">
+                              <span class="text">Lihat detail</span>
+                            </a>
+                          <?php } ?>
+                        </td>
                       </tr>
                     <?php
                       $no++;
                     endforeach ?>
                   </tbody>
                 </table>
-              </div>
-              <a href="daftar_transaksi.php" class="btn btn-outline-secondary">Halaman Utama</a>
-              <!-- Button trigger modal -->
-              <?php if ($hasil['status'] == 'Belum Diproses') { ?>
-                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
-                  Proses Pesanan
-                </button>
-              <?php } ?>
-
-              <!-- Modal -->
-              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Masukan Nomor Resi Pengiriman</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="" method="post">
-                        <div class="form-floating mb-3">
-                          <input type="text" class="form-control" id="floatingInput" placeholder="Nomor Resi" name="no_resi" required>
-                          <small>Pastikan anda memasukan nomor Resi dengan benar</small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -253,6 +264,7 @@ if (isset($_POST["submit"])) {
     </div>
   </div>
 
+
   <!-- Bootstrap core JavaScript-->
   <script src="../sbadmin/vendor/jquery/jquery.min.js"></script>
   <script src="../sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -262,13 +274,6 @@ if (isset($_POST["submit"])) {
 
   <!-- Custom scripts for all pages-->
   <script src="../sbadmin/js/sb-admin-2.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="../sbadmin/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="../sbadmin/js/demo/chart-area-demo.js"></script>
-  <script src="../sbadmin/js/demo/chart-pie-demo.js"></script>
 
   <!-- Datatables -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
@@ -281,23 +286,22 @@ if (isset($_POST["submit"])) {
         dom: 'Bfrtip',
         buttons: [{
             extend: 'excelHtml5',
-            title: 'Data Pesanan Barang',
+            title: 'Data Pelanggan',
             exportOptions: {
-              columns: [0, 1, 2]
+              columns: [0, 1, 2, 3, 4, 5]
             }
           },
           {
             extend: 'pdfHtml5',
-            title: 'Data Pesanan Barang',
+            title: 'Data Pelanggan',
             exportOptions: {
-              columns: [0, 1, 2]
+              columns: [0, 1, 2, 3, 4, 5]
             }
           }
         ]
       });
     });
   </script>
-
 
 </body>
 

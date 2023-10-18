@@ -5,7 +5,7 @@ if (!isset($_SESSION["login_admin"])) {
   header("location:../login.php");
 }
 
-$sql_produk = sql("SELECT * FROM transaksi INNER JOIN user ON transaksi.id_user=user.id_user");
+$sql_produk = sql("SELECT * FROM transaksi INNER JOIN user ON transaksi.id_user=user.id_user ORDER BY `transaksi`.`tanggal_transaksi` DESC");
 $no = 1;
 ?>
 
@@ -286,16 +286,16 @@ $no = 1;
         dom: 'Bfrtip',
         buttons: [{
             extend: 'excelHtml5',
-            title: 'Data Pelanggan',
+            title: 'Data Transaksi',
             exportOptions: {
-              columns: [0, 1, 2, 3, 4, 5]
+              columns: [0, 1, 2, 3, 4, 5, 7]
             }
           },
           {
             extend: 'pdfHtml5',
-            title: 'Data Pelanggan',
+            title: 'Data Transaksi',
             exportOptions: {
-              columns: [0, 1, 2, 3, 4, 5]
+              columns: [0, 1, 2, 3, 4, 5, 7]
             }
           }
         ]

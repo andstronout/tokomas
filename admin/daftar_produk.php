@@ -252,14 +252,14 @@ $no = 1;
         dom: 'Bfrtip',
         buttons: [{
             extend: 'excelHtml5',
-            title: 'Data Pelanggan',
+            title: 'Data Produk',
             exportOptions: {
               columns: [0, 1, 2, 3, 4, 5]
             }
           },
           {
             extend: 'pdfHtml5',
-            title: 'Data Pelanggan',
+            title: 'Data Produk',
             exportOptions: {
               columns: [0, 1, 2, 3, 4, 5]
             }
