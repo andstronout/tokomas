@@ -8,6 +8,7 @@ if (isset($_SESSION['login_pelanggan'])) {
 if (isset($_POST["submit"])) {
   $alamat = $_POST["alamat"] . ' ' . $_POST["kota"] . '-' . $_POST["provinsi"] . ' ' . 'Kode Pos : ' . $_POST["kodepos"];
   $password = md5($_POST["password"]);
+  $nomor_hp = $_POST["nomor_hp"];
   $sql_user = sql("SELECT email FROM user WHERE email='$_POST[email]'");
   $user = $sql_user->fetch_assoc();
   if (!empty($user)) {
@@ -18,7 +19,8 @@ if (isset($_POST["submit"])) {
         </script>
         ";
   } else {
-    $tambah = sql("INSERT INTO user (nama_user, email, `password`, nomor_hp, alamat, `level`) VALUES ('$_POST[nama_user]','$_POST[email]','$password','$_POST[nomor_hp]','$alamat','1')");
+    // var_dump($nomor_hp);
+    $tambah = sql("INSERT INTO user (nama_user, email, `password`, nomor_hp, alamat, `level`) VALUES ('$_POST[nama_user]','$_POST[email]','$password','$nomor_hp','$alamat','1')");
     echo "
         <script>
         alert('Data berhasil Ditambahkan');
@@ -58,7 +60,7 @@ if (isset($_POST["submit"])) {
               <input type="text" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Masukan Email" name="email" required>
             </div>
             <div class="mb-3">
-              <input type="text" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="form-control" id="nomor_hp" aria-describedby="nomor_hpHelp" placeholder="Masukan Nomor Handphone" name="nomor_hp" required>
+              <input type="tel" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="form-control" id="nomor_hp" aria-describedby="nomor_hpHelp" placeholder="Masukan Nomor Handphone" name="nomor_hp" required>
             </div>
             <div class="mb-1">
               <input type="text" class="form-control" placeholder="Alamat Lengkap" name="alamat">

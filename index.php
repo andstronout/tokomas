@@ -71,7 +71,7 @@ if (isset($_POST["submit"])) {
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html"><img width="250" src="images/logo.png" alt="#" /></a>
+          <a class="navbar-brand" href="#"><img width="250" src="images/logo.png" alt="#" /></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class=""> </span>
           </button>
@@ -195,9 +195,6 @@ if (isset($_POST["submit"])) {
                       <br>
                       On Everything
                     </h1>
-                    <p>
-                      Explicabo esse amet tempora quibusdam laudantium, laborum eaque magnam fugiat hic? Esse dicta aliquid error repudiandae earum suscipit fugiat molestias, veniam, vel architecto veritatis delectus repellat modi impedit sequi.
-                    </p>
                     <div class="btn-box">
                       <a href="#produk" class="btn1">
                         Shop Now
@@ -220,9 +217,6 @@ if (isset($_POST["submit"])) {
                       <br>
                       On Everything
                     </h1>
-                    <p>
-                      Explicabo esse amet tempora quibusdam laudantium, laborum eaque magnam fugiat hic? Esse dicta aliquid error repudiandae earum suscipit fugiat molestias, veniam, vel architecto veritatis delectus repellat modi impedit sequi.
-                    </p>
                     <div class="btn-box">
                       <a href="" class="btn1">
                         Shop Now
@@ -245,9 +239,6 @@ if (isset($_POST["submit"])) {
                       <br>
                       On Everything
                     </h1>
-                    <p>
-                      Explicabo esse amet tempora quibusdam laudantium, laborum eaque magnam fugiat hic? Esse dicta aliquid error repudiandae earum suscipit fugiat molestias, veniam, vel architecto veritatis delectus repellat modi impedit sequi.
-                    </p>
                     <div class="btn-box">
                       <a href="" class="btn1">
                         Shop Now
@@ -532,7 +523,7 @@ if (isset($_POST["submit"])) {
           <div class="card mx-3 mt-3" style="width: 18rem;">
             <img src="images/produk/<?= $produk['gambar_produk']; ?>" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title"><?= $produk['nama_produk']; ?><small class="mb-2"><br><?= $produk['berat']; ?> Gram</small></h5>
+              <h5 class="card-title"><?= $produk['nama_produk']; ?><small class="mb-2"><br><?= $produk['berat']; ?> Gram - Rp. <?= number_format($produk['harga_produk']); ?></small></h5>
 
               <p class="card-text"><?= $produk['deskripsi']; ?></p>
               <div class="row">
@@ -540,7 +531,7 @@ if (isset($_POST["submit"])) {
                   <form action="" method="post">
                     <input type="hidden" name="id_produk" value="<?= $produk['id_produk']; ?>">
                     <label class="mb-2">Qty :</label>
-                    <input type="number" value="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="qty_cart" class="form-control mb-3">
+                    <input type="number" value="1" min="1" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="qty_cart" class="form-control mb-3">
                     <?php if ($produk['qty_produk'] == 0) { ?>
                       <p><i>Stock Habis</i></p>
                     <?php } else { ?>
@@ -565,31 +556,9 @@ if (isset($_POST["submit"])) {
               <a href="#"><img width="210" src="images/logo.png" alt="#" /></a>
             </div>
             <div class="information_f">
-              <p><strong>ADDRESS:</strong>Manado, Indonesia</p>
-              <p><strong>TELEPHONE:</strong> +91 987 654 3210</p>
-              <p><strong>EMAIL:</strong> nadyaryan@gmail.com</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="row">
-            <div class="col-md-5 ">
-              <div class="widget_menu">
-                <h3>Newsletter</h3>
-                <div class="information_f">
-                  <p>Subscribe by our newsletter and get update protidin.</p>
-                </div>
-                <div class="form_sub">
-                  <form>
-                    <fieldset>
-                      <div class="field">
-                        <input type="email" placeholder="Enter Your Mail" name="email" />
-                        <input type="submit" value="Subscribe" />
-                      </div>
-                    </fieldset>
-                  </form>
-                </div>
-              </div>
+              <p><strong>ADDRESS :</strong> Manado, Indonesia</p>
+              <p><strong>TELEPHONE :</strong> +91 987 654 3210</p>
+              <p><strong>EMAIL :</strong> nadyaryan@gmail.com</p>
             </div>
           </div>
         </div>

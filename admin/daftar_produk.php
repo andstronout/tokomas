@@ -158,7 +158,7 @@ $no = 1;
                         <th><?= $produk['nama_produk']; ?></th>
                         <th><?= $produk['jenis']; ?></th>
                         <th><?= $produk['berat']; ?></th>
-                        <th><?= $produk['harga_produk']; ?></th>
+                        <th>Rp. <?= number_format($produk['harga_produk']); ?></th>
                         <th><?= $produk['qty_produk']; ?></th>
                         <td>
                           <a href="edit_produk.php?id=<?= $produk['id_produk']; ?>" class="btn btn-info btn-sm">

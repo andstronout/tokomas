@@ -5,7 +5,6 @@ if (!isset($_SESSION["login_admin"])) {
   header("location:../login.php");
 }
 
-$sql_produk = sql("SELECT * FROM transaksi INNER JOIN user ON transaksi.id_user=user.id_user ORDER BY `transaksi`.`tanggal_transaksi` DESC");
 $no = 1;
 ?>
 
@@ -138,6 +137,35 @@ $no = 1;
           <!-- Data Table -->
           <div class="card shadow mb-4">
             <div class="card-body">
+              <form class="row g-3" action="" method="post">
+                <div class="col-auto">
+                  <label for="">Dari Tanggal</label>
+                  <input type="date" class="form-control" name="t_awal" required>
+                </div>
+                <div class="col-auto">
+                  <label for="">Ke Tanggal</label>
+                  <input type="date" class="form-control" name="t_akhir" required>
+                </div>
+                <div class="col-auto mt-4">
+                  <button type="submit" class="btn btn-secondary btn-sm" name="simpan">Simpan</button>
+                  <a href="daftar_transaksi.php" class="btn btn-outline-secondary btn-sm">Reset</a>
+                </div>
+              </form>
+              <?php
+              if (isset($_POST['simpan'])) {
+                // var_dump($_POST["t_awal"], $_POST["t_akhir"]);
+                $_SESSION["awal"] = $_POST["t_awal"];
+                $_SESSION["akhir"] = $_POST["t_akhir"];
+                $sql_produk = sql("SELECT * FROM transaksi 
+                INNER JOIN user ON transaksi.id_user=user.id_user 
+                WHERE transaksi.tanggal_transaksi BETWEEN '$_SESSION[awal]' AND '$_SESSION[akhir]'
+                ORDER BY transaksi.tanggal_transaksi
+                ");
+              } else {
+                $sql_produk = sql("SELECT * FROM transaksi INNER JOIN user ON transaksi.id_user=user.id_user ORDER BY `transaksi`.`tanggal_transaksi` DESC");
+              }
+              ?>
+              <br>
               <div class="table-responsive">
                 <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                   <thead>
@@ -160,7 +188,7 @@ $no = 1;
                         <th><?= $transaksi['id_pesanan']; ?></th>
                         <th><?= $transaksi['nama_user']; ?></th>
                         <th><?= $transaksi['tanggal_transaksi']; ?></th>
-                        <th><?= $transaksi['total_transaksi']; ?></th>
+                        <th>Rp. <?= number_format($transaksi['total_transaksi']); ?></th>
                         <th>
                           <?php if ($transaksi['no_resi'] == NULL) {
                             echo "Belum ada resi";
@@ -204,7 +232,7 @@ $no = 1;
                               <span class="text">Proses Transaksi</span>
                             </a>
                           <?php } else { ?>
-                            <a href="detail_transaksi.php?id=<?= $transaksi['id_transaksi']; ?>" class="btn btn-info btn-sm">
+                            <a href="detail_transaksi.php?id=<?= $transaksi['id_transaksi']; ?>" class="btn btn-success btn-sm">
                               <span class="text">Lihat detail</span>
                             </a>
                           <?php } ?>
